@@ -46,7 +46,7 @@ class Portfolio {
         if (!failures.length) {
             return new Money(total, currency);
         }
-        throw new Error("Missing excange rate(s): [" + failures.join() + "]");
+        throw new Error("Missing exchange rate(s): [" + failures.join() + "]");
         
     };
 };
