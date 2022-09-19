@@ -11,19 +11,43 @@ class Portfolio {
         this.moneys = this.moneys.concat(moneys);
     };
 
+
     convert(money, currency) {
-        const eurToUsd = 1.2;
+        let exchangeRates = new Map();
+        
+        exchangeRates.set("EUR->USD", 1.2);
+        exchangeRates.set("USD->KRW", 1100);
+
         if (money.currency == currency) {
             return money.amount;
         };
-        return money.amount * eurToUsd;
+
+        let key = money.currency + "->" + currency;
+        let rate = money.amount * exchangeRates.get(key);
+        if (rate === undefined) {
+            return undefined;
+        }
+        return money.amount * rate;
     };
 
-    evaluate(currency) {
+
+    evaluate(bank, currency) {
+        let failures = [];
         let total = this.moneys.reduce((sum, money)=> {
-            return sum + this.convert(money, currency);
+            try {
+                let convertedMoney = bank.convert(money, currency);
+                return sum + convertedMoney.amount;
+            } catch (error) {
+                failures.push(error.message);
+                return sum;
+            }
         }, 0);
-        return new Money(total, currency);
+
+        if (!failures.length) {
+            return new Money(total, currency);
+        }
+        throw new Error("Missing exchange rate(s): [" + failures.join() + "]");
+        
     };
 };
 
