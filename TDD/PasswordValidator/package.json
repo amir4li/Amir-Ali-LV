@@ -1,0 +1,14 @@
+{
+  "name": "passwordvalidator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "passwordValidator.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.0.3"
+  }
+}
